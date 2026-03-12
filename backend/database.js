@@ -68,6 +68,20 @@ const db = new sqlite3.Database(dbPath, (err) => {
                 });
             }
         });
+        
+        // Reviews table
+        db.run(`CREATE TABLE IF NOT EXISTS reviews (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            ride_id INTEGER,
+            rider_id INTEGER,
+            driver_id INTEGER,
+            rating INTEGER CHECK(rating >= 1 AND rating <= 5),
+            comment TEXT,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY(ride_id) REFERENCES rides(id),
+            FOREIGN KEY(rider_id) REFERENCES users(id),
+            FOREIGN KEY(driver_id) REFERENCES users(id)
+        )`);
     }
 });
 
